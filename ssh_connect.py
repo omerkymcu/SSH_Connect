@@ -1,6 +1,6 @@
 import os
 import subprocess
-from tkinter import Tk, Label, Entry, Button, StringVar, Frame, filedialog, Menubutton, Menu
+from tkinter import Tk, Label, Entry, Button, StringVar, filedialog, Menu, Menubutton, messagebox
 
 CONFIG_FILE = "config.txt"
 
@@ -19,6 +19,11 @@ def baglan_click():
     key_dosyasi = os.path.join(key_klasoru.get(), secili_key.get())
     kullanici = kullanici_adi.get()
     ip_adresi = ip_adres_girisi.get()
+
+    if not kullanici:
+        messagebox.showwarning("Kullanıcı Adı Eksik", "Lütfen bir kullanıcı adı girin.")
+        return
+
     sunucuya_baglan(key_dosyasi, kullanici, ip_adresi)
 
 def refresh_keys():
@@ -60,17 +65,19 @@ except FileNotFoundError:
 browse_button = Button(app, text="SSH Klasörü Seç", command=browse_ssh_folder, width=20, height=2)
 browse_button.place(relx=0.5, rely=0.1, anchor="center")
 
-kullanici_adi = StringVar(app)
+kullanici_adi_label = Label(app, text="Kullanıcı Adı:")
+kullanici_adi_label.place(relx=0.15, rely=0.3, anchor="center")
+
+kullanici_adi = StringVar(app)  # Bu satırı ekleyin
 kullanici_adi.set("ubuntu")
 kullanici_adi_girisi = Entry(app, textvariable=kullanici_adi)
-kullanici_adi_girisi.place(relx=0.35, rely=0.35, anchor="center")
+kullanici_adi_girisi.place(relx=0.5, rely=0.3, anchor="center")
 
-Label(app, text="Kullanıcı Adı:").place(relx=0.35, rely=0.3, anchor="center")
+ip_adres_label = Label(app, text="IP Adresi:")
+ip_adres_label.place(relx=0.15, rely=0.4, anchor="center")
 
 ip_adres_girisi = Entry(app)
-ip_adres_girisi.place(relx=0.65, rely=0.35, anchor="center")
-
-Label(app, text="IP Adresi:").place(relx=0.65, rely=0.3, anchor="center")
+ip_adres_girisi.place(relx=0.5, rely=0.4, anchor="center")
 
 load_ip_button = Button(app, text="TXT'den IP Yükle", command=load_ip_from_txt)
 load_ip_button.place(relx=0.5, rely=0.45, anchor="center")
